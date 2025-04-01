@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { CopyButton } from "./copy-button";
 import { Wand2, RefreshCw, ChevronDown, ChevronUp } from "lucide-react";
 import { ActionButton } from "./action-button";
 import { Textarea } from "./ui/textarea";
@@ -71,8 +70,6 @@ export function CustomizationDropdown({
                   icon={RefreshCw}
                   tooltipText="Regenerate with/without custom instructions"
                 />
-
-                <CopyButton onClick={onCopy} />
               </div>
             </div>
 

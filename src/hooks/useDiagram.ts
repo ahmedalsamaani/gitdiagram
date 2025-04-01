@@ -148,6 +148,45 @@ export function useDiagram(username: string, repo: string) {
     }
   };
 
+  const handleDownload = async () => {
+    try {
+      // Find the SVG in the DOM - mermaid renders it with class="mermaid"
+      const container = document.querySelector('.mermaid');
+      
+      if (!container) {
+        console.error("Mermaid diagram not found in the DOM");
+        return;
+      }
+      
+      // Get the SVG element
+      const svgElement = container.querySelector('svg');
+      
+      if (!svgElement) {
+        console.error("SVG element not found inside mermaid container");
+        return;
+      }
+      
+      // Clone the SVG to avoid modifying the displayed one
+      const svgClone = svgElement.cloneNode(true) as SVGElement;
+      
+      // Create a download link
+      const downloadLink = document.createElement('a');
+      
+      // Set download attributes
+      downloadLink.download = `${username}-${repo}-diagram.png`;
+      
+      // Open the diagram in a new tab/window as PNG
+      // This is a simple approach - it will open the SVG which can be saved as PNG from browser
+      downloadLink.href = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgClone.outerHTML)}`;
+      downloadLink.target = '_blank';
+      downloadLink.click();
+      
+    } catch (error) {
+      console.error("Error downloading diagram:", error);
+      alert("Failed to download diagram. Please try again.");
+    }
+  };
+
   const handleApiKeySubmit = async (apiKey: string) => {
     setShowApiKeyDialog(false);
     setLoading(true);
@@ -188,6 +227,7 @@ export function useDiagram(username: string, repo: string) {
     handleModify,
     handleRegenerate,
     handleCopy,
+    handleDownload,
     showApiKeyDialog,
     tokenCount,
     handleApiKeySubmit,
